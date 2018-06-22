@@ -4,6 +4,7 @@ public class CubePlacer : MonoBehaviour
 {
     private Grid grid;
     public GameObject floor;
+    public MaterialOptions materialSelector;
 
     private void Awake()
     {
@@ -26,59 +27,31 @@ public class CubePlacer : MonoBehaviour
    
     private void PlaceCubeNear(Vector3 clickPoint)
     {
+        //Jei yra pasirinktų baldų dėti
         if (PlayerPrefs.GetInt("FurnitureSelected") != -1)
         {
+            //Randame artimiausią poziciją ant grid prie kurios snapinsim (bug)
             var finalPosition = grid.GetNearestPointOnGrid(clickPoint);
             float dist = Vector3.Distance(floor.transform.position, finalPosition);
             Debug.Log("Distance");
             Debug.Log(dist.ToString());
-            Debug.Log(finalPosition);
+
+           //Surandam kuris pasirinktas ir tą įterpiame
             if (PlayerPrefs.GetInt("FurnitureSelected") == 0)
             {
-                GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                temp.transform.localScale = new Vector3((float)0.25, (float)1.5, 1);
-
-                temp.transform.position = finalPosition;
-                var tmp = temp.AddComponent(typeof(MouseDrag)) as MouseDrag;
-                //padejom ir uzblokuojam vel dejima
-                PlayerPrefs.SetInt("FurnitureSelected", -1);
-                PlayerPrefs.Save();
+                CreateFurniture(finalPosition, 0.25, 1.5, 1);
             }
             if (PlayerPrefs.GetInt("FurnitureSelected") == 1)
             {
-                GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                temp.transform.localScale = new Vector3((float)2.5, (float)1, 1);
-                temp.transform.position = finalPosition;
-
-                var tmp = temp.AddComponent(typeof(MouseDrag)) as MouseDrag;
-                PlayerPrefs.SetInt("FurnitureSelected", -1);
-                PlayerPrefs.Save();
+                CreateFurniture(finalPosition, 2.5, 1, 1);
             }
             if (PlayerPrefs.GetInt("FurnitureSelected") == 2)
             {
-                Debug.Log("Stalas");
-                GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-
-                Debug.Log(temp.transform.localScale);
-                temp.transform.localScale = new Vector3((float)0.5, (float)0.5,(float) 0.5);
-                //finalPosition.y += 1;
-                //finalPosition.x -= 1 * (float)0.7;
-                temp.transform.position = finalPosition;
-                Debug.Log(temp.transform.position);
-
-                var tmp = temp.AddComponent(typeof(MouseDrag)) as MouseDrag;
-                PlayerPrefs.SetInt("FurnitureSelected", -1);
-                PlayerPrefs.Save();
+                CreateFurniture(finalPosition, 0.5, 0.5, 0.5);
             }
             if (PlayerPrefs.GetInt("FurnitureSelected") == 3)
             {
-                GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                temp.transform.localScale = new Vector3((float)2, (float)0.9, (float)0.1);
-                temp.transform.position = finalPosition;
-                var tmp = temp.AddComponent(typeof(MouseDrag)) as MouseDrag;
-
-                PlayerPrefs.SetInt("FurnitureSelected", -1);
-                PlayerPrefs.Save();
+                CreateFurniture(finalPosition, 2, 0.9, 0.1);
             }
             /*else
             {
@@ -87,5 +60,19 @@ public class CubePlacer : MonoBehaviour
             }*/
             //GameObject.CreatePrimitive(PrimitiveType.Sphere).transform.position = nearPoint;
         }
+    }
+    private void CreateFurniture(Vector3 finalPosition, double w, double l, double h)
+    {
+        GameObject temp = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        temp.transform.localScale = new Vector3((float)w, (float)l, (float)0.1);
+        temp.transform.position = finalPosition;
+        MeshRenderer m = temp.GetComponent<MeshRenderer>();
+        Material[] materials = m.materials;
+        temp.GetComponent<MeshRenderer>().material = materials[PlayerPrefs.GetInt("material")];
+
+        var tmp = temp.AddComponent(typeof(MouseDrag)) as MouseDrag;
+
+        PlayerPrefs.SetInt("FurnitureSelected", -1);
+        PlayerPrefs.Save();
     }
 }

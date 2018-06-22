@@ -4,9 +4,9 @@ using System.Collections;
 public class CameraDrag : MonoBehaviour
 {
 
-    float mainSpeed = 5.0f; //regular speed
-    float camSens = 0.15f; //How sensitive it with mouse
-    private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
+    float mainSpeed = 5.0f; //įprastinis greitis
+    float camSens = 0.15f; 
+    private Vector3 lastMouse = new Vector3(255, 255, 255); 
     private float totalRun = 1.0f;
     private bool mouseRotate = false;
 
@@ -22,12 +22,12 @@ public class CameraDrag : MonoBehaviour
     }
     void Update()
     {
-        //camera locks
+        
         if (Input.GetKey(KeyCode.C)&& mouseRotate==false)
             mouseRotate = true;
         else
             mouseRotate = false;
-        //Mouse camera angles
+        
         if (mouseRotate)
         {
             lastMouse = Input.mousePosition - lastMouse;
@@ -36,7 +36,7 @@ public class CameraDrag : MonoBehaviour
             transform.eulerAngles = lastMouse;
             lastMouse = Input.mousePosition; 
         }
-        //Keyboard commands
+        
         Vector3 p = GetBaseInput();
 
             totalRun = Mathf.Clamp(totalRun * 0.5f, (float)-2.5, (float)2.5);
@@ -50,7 +50,7 @@ public class CameraDrag : MonoBehaviour
     }
 
     private Vector3 GetBaseInput()
-    { //returns the basic values, if it's 0 than it's not active.
+    { 
         Vector3 p_Velocity = new Vector3();
         if (Input.GetKey(KeyCode.W))
         {
