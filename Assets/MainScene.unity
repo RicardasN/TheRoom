@@ -331,7 +331,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 836898099}
+      - m_Target: {fileID: 604115542}
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -378,6 +378,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1752551899}
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 528622368}
+        m_MethodName: GetParameters
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -438,7 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floor: {fileID: 197925103}
-  materialSelector: {fileID: 1176712815}
+  materialSelector: {fileID: 0}
 --- !u!114 &197925109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1444,6 +1455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseMenuUI: {fileID: 758170435}
+  furnitureSettings: {fileID: 1752551899}
 --- !u!1 &991155923
 GameObject:
   m_ObjectHideFlags: 0
@@ -1793,10 +1805,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1176712810}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ebe9e4ba9a5e104780abb7ffc5b7394, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f8ce170eb2508841a36f5bba6416114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materialsDropdown: {fileID: 1176712812}
 --- !u!23 &1176712816
 MeshRenderer:
   m_ObjectHideFlags: 0
