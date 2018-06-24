@@ -5,7 +5,8 @@ public class CameraDrag : MonoBehaviour
 {
 
     float mainSpeed = 5.0f; //įprastinis greitis
-    float camSens = 0.15f; 
+    float camSens = 0.15f;
+    public GameObject floor;
     private Vector3 lastMouse = new Vector3(255, 255, 255); 
     private float totalRun = 1.0f;
     private bool mouseRotate = false;
@@ -16,7 +17,8 @@ public class CameraDrag : MonoBehaviour
         float y = -PlayerPrefs.GetFloat("height") + 2;
         float z = PlayerPrefs.GetFloat("length")/2;
 
-        Vector3 newPosition = new Vector3(x,y,z);
+        Vector3 newPosition = new Vector3(x, y, z);
+        //Vector3 newPosition = new Vector3(floor.transform.position.x, floor.transform.position.y+1, floor.transform.position.z);
         //Debug.Log(newPosition);
         transform.position = newPosition;
     }

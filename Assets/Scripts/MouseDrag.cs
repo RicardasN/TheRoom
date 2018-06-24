@@ -7,7 +7,7 @@ public class MouseDrag : MonoBehaviour
 
     float distance = 5;
     private Grid grid;
-    private Vector3 currentPosition;
+    bool objSelected=true;
     /*private void Awake()
     {
         grid = FindObjectOfType<Grid>();
@@ -18,47 +18,69 @@ public class MouseDrag : MonoBehaviour
         Vector3 mousePosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, distance);
         Vector3 objPosition = Camera.main.ScreenToWorldPoint(mousePosition);
 
-        transform.position = objPosition;
-        currentPosition = objPosition;
-        
+        gameObject.transform.position = objPosition;
 
-    }
-    void Update()
-    {   //Turetu prisnapint prie sienos ar grindų, bet taip nevyksta 
-        /*if (Input.GetMouseButtonUp(0))
+
+        //objekto matmenys
+        float x = gameObject.transform.localScale.x, y = gameObject.transform.localScale.y, z = gameObject.transform.localScale.z;
+        if (transform.eulerAngles.y != 0)
+            if ((gameObject.transform.eulerAngles.y > 85 && gameObject.transform.eulerAngles.y < 95) ||
+                (gameObject.transform.eulerAngles.y > -95 && gameObject.transform.eulerAngles.y < -85))
+            { float tmp = z; z = x; x = tmp; }
+        if (Input.GetMouseButtonUp(0))
         {
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
             if (Physics.Raycast(ray, out hitInfo))
             {
-            //suranda artimiausią poziciją ant grid ir ten įkelia
-                var finalPosition = grid.GetNearestPointOnGrid(currentPosition);
-                transform.position = finalPosition;
+                gameObject.transform.position = ClosestWallOffset(hitInfo.point, x,
+                    z, y);
             }
-        }*/
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            gameObject.transform.eulerAngles = new Vector3(
+                gameObject.transform.eulerAngles.x,
+                gameObject.transform.eulerAngles.y + 90,
+                gameObject.transform.eulerAngles.z
+            );
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+            gameObject.transform.eulerAngles = new Vector3(
+                gameObject.transform.eulerAngles.x,
+                gameObject.transform.eulerAngles.y - 90,
+                gameObject.transform.eulerAngles.z
+            );
+}
+    void Update()
+    {
+            
     }
-        //Metodas snapinti padraginus objektą
-        /* Vector3 SnapToGrid(Vector3 Position)
-         {
-             GameObject grid = GameObject.Find("grid");
-             if (!grid)
-                 return Position;
+    private Vector3 ClosestWallOffset(Vector3 finalPosition, double w, double l, double h)
+    {
 
-             //    get grid size from the texture tiling
-             Vector2 GridSize = grid.renderer.material.mainTextureScale;
+        if (Camera.main.transform.position.z > finalPosition.z)
+        {
+            finalPosition.z += (float)(l*0.5);
+        }
 
-             //    get position on the quad from -0.5...0.5 (regardless of scale)
-             Vector3 gridPosition = grid.transform.InverseTransformPoint(Position);
-             //    scale up to a number on the grid, round the number to a whole number, then put back to local size
-             gridPosition.x = Mathf.Round(gridPosition.x * GridSize.x) / GridSize.x;
-             gridPosition.y = Mathf.Round(gridPosition.y * GridSize.y) / GridSize.y;
+        if (Camera.main.transform.position.x > finalPosition.x)
+        {
+            finalPosition.x += (float)(w * 0.5);
+        }
+        if (Camera.main.transform.position.x < finalPosition.x)
+        {
+            finalPosition.x -= (float)(w * 0.5);
+        }
 
-             //    don't go out of bounds
-             gridPosition.x = Mathf.Min(0.5f, Mathf.Max(-0.5f, gridPosition.x));
-             gridPosition.y = Mathf.Min(0.5f, Mathf.Max(-0.5f, gridPosition.y));
+        if (Camera.main.transform.position.z < finalPosition.z)
+        {
+            finalPosition.z -= (float)(l * 0.5);
+        }
+        //setting y higher so it does not go through the ground
+        finalPosition.y += (float)(h * 0.5);
 
-             Position = grid.transform.TransformPoint(gridPosition);
-             return Position;
-         }*/
+        return finalPosition;
     }
+}
